@@ -336,6 +336,12 @@ export default function About() {
                   <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
                 </dd>
               </div>
+              <div>
+                <dt>Phone</dt>
+                <dd>
+                  <a href={PROFILE.phoneHref}>{PROFILE.phone}</a>
+                </dd>
+              </div>
             </dl>
           </div>
           <blockquote className="quote rv" style={{ ["--i" as string]: 3 }}>

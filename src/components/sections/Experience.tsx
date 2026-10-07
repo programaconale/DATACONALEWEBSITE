@@ -29,6 +29,10 @@ const css = `
 .st h3{margin:12px 0 0;font-weight:700;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.04em;line-height:1.1}
 .st-place{margin:6px 0 0;font-size:15px;color:var(--ink-2)}
 .st-place span{color:var(--mute)}
+.st-status{display:inline-flex;align-items:center;gap:9px;margin:12px 0 0;padding:7px 12px;border-radius:999px;background:var(--ink);color:#fff;font:500 11px/1.3 var(--font-mono);text-transform:uppercase;letter-spacing:.02em}
+.st:not(.is-lit) .st-status{background:var(--soft);color:var(--mute)}
+.st-status b{flex:none;width:7px;height:7px;border-radius:50%;background:#fff;animation:st-pulse 1.8s var(--ease) infinite}
+@keyframes st-pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}100%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
 .st ul{list-style:none;margin:14px 0 0;padding:0}
 .st li{position:relative;padding:7px 0 7px 18px;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
 .st li::before{content:"";position:absolute;left:0;top:15px;width:8px;height:1px;background:var(--faint)}
@@ -58,6 +62,7 @@ type Stop = {
   title: string;
   place: string;
   sub?: string;
+  status?: string;
   bullets: string[];
 };
 
@@ -81,6 +86,7 @@ const STOPS: Stop[] = [
     title: x.title,
     place: x.client ? `${x.org} — Client: ${x.client}` : x.org,
     sub: x.mode,
+    status: x.status,
     bullets: x.bullets,
   })),
 ].sort((a, b) => a.start.localeCompare(b.start));
@@ -131,6 +137,12 @@ export default function Experience() {
                   {s.place}
                   {s.sub && <span> · {s.sub}</span>}
                 </p>
+                {s.status && (
+                  <p className="st-status">
+                    <b aria-hidden="true" />
+                    {s.status}
+                  </p>
+                )}
                 <ul>
                   {s.bullets.map((b) => (
                     <li key={b}>{b}</li>
@@ -147,7 +159,7 @@ export default function Experience() {
             <div className="st-body">
               <a href="#contact" className="nxt" onClick={goContact}>
                 <p>
-                  <small>Next stop</small>
+                  <small>Open to work · Next stop</small>
                   Your <em>team?</em>
                 </p>
                 <span className="btn btn-primary">

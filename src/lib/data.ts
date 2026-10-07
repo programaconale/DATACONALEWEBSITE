@@ -25,6 +25,8 @@ export const PROFILE = {
   github: "https://github.com/programaconale",
   linkedin: "https://www.linkedin.com/in/alemarcano/",
   resume: "/Alejandro-Marcano-Van-Grieken-Resume.pdf",
+  /** Google Calendar appointment schedule (Mon–Fri, 16:00–18:00 Madrid). Empty = button falls back to email. */
+  booking: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ1vI_KfA7JpHEdJQChQjRMtiqGeCID33Ro_P-3mV91RUBqfvS-ZYQExz1wuEQAaIhwZCohqb1oZ?gv=true",
   resumeSummary:
     "Data professional with a strong background in data engineering, AI, and automation, with experience across startups, consultancies, and freelance work, specializing in translating business requirements into scalable data products. Experienced Product Owner managing projects from MVP to production-ready AI solutions. Passionate about teaching, sharing knowledge through training, articles, and tech events.",
   /** A second short line, also from the résumé. */
@@ -177,6 +179,7 @@ export type Experience = {
   start: string; // "YYYY-MM"
   end: string | null; // null = present
   period: string;
+  status?: string;
   bullets: string[];
 };
 
@@ -190,6 +193,7 @@ export const EXPERIENCE: Experience[] = [
     start: "2025-05",
     end: null,
     period: "May 2025 – Present",
+    status: "Client project completed · Actively looking for new opportunities",
     bullets: [
       "Designed and implemented end-to-end ETL processes in Microsoft Fabric, migrating legacy architecture into a modern cloud ecosystem",
       "Built a Data Warehouse architecture models to centralize ingestion and transformation layers, ensuring scalability and governance",

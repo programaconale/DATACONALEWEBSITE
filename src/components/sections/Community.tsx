@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { COMMUNITY } from "@/lib/data";
 import SectionHead from "../ui/SectionHead";
+import BookCall from "../ui/BookCall";
 
 /**
  * "Off the clock": browser windows with real full-page captures of the community sites.
@@ -127,6 +128,8 @@ export default function Community() {
             </li>
           ))}
         </ul>
+
+        <BookCall />
       </div>
     </section>
   );

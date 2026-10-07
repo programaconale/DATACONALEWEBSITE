@@ -3,6 +3,7 @@
 import { useState, type MouseEvent, type PointerEvent } from "react";
 import { PROFILE, SECTION_INDEX } from "@/lib/data";
 import { scrollToTarget } from "@/lib/scroll";
+import { BookButton, CalendarIcon } from "../ui/BookCall";
 
 const css = `
 .ct{padding-bottom:0}
@@ -12,6 +13,8 @@ const css = `
 .ct-h .ch.hop{animation:hop .62s var(--ease)}
 .ct-h em{font-family:var(--font-serif);font-weight:400;font-style:italic;letter-spacing:-.025em;color:var(--mute)}
 @keyframes hop{0%{transform:none}35%{transform:translateY(-.16em)}65%{transform:translateY(.03em)}100%{transform:none}}
+.ct-book{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:clamp(28px,4vw,44px)}
+.ct-book .btn{height:58px;padding:0 28px;font-size:16px;gap:10px}
 .ct-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end;margin-top:clamp(48px,7vw,96px)}
 .ct-label{margin:0 0 14px;font:500 11.5px/1 var(--font-mono);text-transform:uppercase;color:var(--mute)}
 .ct-mail{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px}
@@ -115,6 +118,13 @@ export default function Contact() {
             </span>
           ))}
         </h2>
+
+        <div className="ct-book rv" style={{ ["--i" as string]: 2 }}>
+          <BookButton className="btn btn-primary">
+            <CalendarIcon />
+            Book a call
+          </BookButton>
+        </div>
 
         <div className="ct-grid">
           <div>

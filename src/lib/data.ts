@@ -25,7 +25,7 @@ export const PROFILE = {
   github: "https://github.com/programaconale",
   linkedin: "https://www.linkedin.com/in/alemarcano/",
   resume: "/Alejandro-Marcano-Van-Grieken-Resume.pdf",
-  /** Google Calendar appointment schedule (Mon–Fri, 16:00–18:00 Madrid). Empty = button falls back to email. */
+  /** Google Calendar appointment schedule embed. Empty = booking buttons fall back to email. */
   booking: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ1vI_KfA7JpHEdJQChQjRMtiqGeCID33Ro_P-3mV91RUBqfvS-ZYQExz1wuEQAaIhwZCohqb1oZ?gv=true",
   resumeSummary:
     "Data professional with a strong background in data engineering, AI, and automation, with experience across startups, consultancies, and freelance work, specializing in translating business requirements into scalable data products. Experienced Product Owner managing projects from MVP to production-ready AI solutions. Passionate about teaching, sharing knowledge through training, articles, and tech events.",

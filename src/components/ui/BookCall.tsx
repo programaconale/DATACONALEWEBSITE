@@ -1,8 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { PROFILE } from "@/lib/data";
 import { lockScroll } from "@/lib/scroll";
+
+const MAILTO = `mailto:${PROFILE.email}?subject=${encodeURIComponent("New website project")}`;
+
+const dlgCss = `
+.bc-dlg{position:fixed;inset:0;margin:auto;width:min(980px,calc(100vw - 32px));height:min(780px,calc(100dvh - 32px));max-width:none;max-height:none;padding:0;border:0;border-radius:24px;
+  background:var(--card);color:var(--ink);box-shadow:var(--lift);overflow:hidden}
+.bc-dlg[open]{display:flex;flex-direction:column;animation:bc-in .5s var(--ease)}
+.bc-dlg::backdrop{background:rgba(13,13,13,.55);backdrop-filter:blur(4px)}
+@keyframes bc-in{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.bc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 14px 22px;border-bottom:1px solid var(--line)}
+.bc-head p{margin:0;font-weight:700;font-size:17px;letter-spacing:-.02em}
+.bc-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:var(--paper);color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
+.bc-x:hover{background:var(--soft)}
+.bc-dlg iframe{flex:1;width:100%;border:0;background:#fff}
+`;
 
 const css = `
 .bc{position:relative;margin-top:clamp(64px,8vw,104px);padding:clamp(28px,4vw,52px);border-radius:32px;background:var(--ink);color:#fff;overflow:hidden;
@@ -23,26 +38,12 @@ const css = `
   font:600 16px/1 var(--font-sans);letter-spacing:-.01em;cursor:pointer;transition:transform .5s var(--ease)}
 .bc-book:hover{transform:translateY(-2px)}
 .bc-book svg{flex:none}
-.bc-hours{margin:0;text-align:center;font:500 11px/1.4 var(--font-mono);text-transform:uppercase;color:rgba(255,255,255,.5)}
-.bc-dlg{position:fixed;inset:0;margin:auto;width:min(980px,calc(100vw - 32px));height:min(780px,calc(100dvh - 32px));max-width:none;max-height:none;padding:0;border:0;border-radius:24px;
-  background:var(--card);color:var(--ink);box-shadow:var(--lift);overflow:hidden}
-.bc-dlg[open]{display:flex;flex-direction:column;animation:bc-in .5s var(--ease)}
-.bc-dlg::backdrop{background:rgba(13,13,13,.55);backdrop-filter:blur(4px)}
-@keyframes bc-in{from{opacity:0;transform:translateY(16px) scale(.98)}}
-.bc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 14px 22px;border-bottom:1px solid var(--line)}
-.bc-head p{margin:0;font-weight:700;font-size:17px;letter-spacing:-.02em}
-.bc-head p small{display:block;margin-top:4px;font:500 10.5px/1 var(--font-mono);font-weight:500;text-transform:uppercase;letter-spacing:0;color:var(--mute)}
-.bc-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:var(--paper);color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
-.bc-x:hover{background:var(--soft)}
-.bc-dlg iframe{flex:1;width:100%;border:0;background:#fff}
 @media (max-width:899px){.bc{grid-template-columns:minmax(0,1fr);align-items:stretch}}
 `;
 
-export default function BookCall() {
+export function BookButton({ className, children }: { className: string; children: ReactNode }) {
   const dlg = useRef<HTMLDialogElement>(null);
   const [opened, setOpened] = useState(false);
-  const subject = encodeURIComponent("New website project");
-  const mailto = `mailto:${PROFILE.email}?subject=${subject}`;
 
   useEffect(() => {
     const d = dlg.current;
@@ -52,12 +53,45 @@ export default function BookCall() {
     return () => d.removeEventListener("close", onClose);
   }, []);
 
+  if (!PROFILE.booking) {
+    return (
+      <a className={className} href={MAILTO}>
+        {children}
+      </a>
+    );
+  }
+
   const open = () => {
     setOpened(true);
     dlg.current?.showModal();
     lockScroll(true);
   };
 
+  return (
+    <>
+      <style>{dlgCss}</style>
+      <button type="button" className={className} onClick={open} aria-haspopup="dialog">
+        {children}
+      </button>
+      <dialog
+        ref={dlg}
+        className="bc-dlg"
+        aria-label="Book a call about your website"
+        onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
+      >
+        <div className="bc-head">
+          <p>Book a call about your website</p>
+          <button type="button" className="bc-x" onClick={() => dlg.current?.close()} aria-label="Close">
+            ×
+          </button>
+        </div>
+        {opened && <iframe src={PROFILE.booking} title="Book a call with Alejandro (Google Calendar)" />}
+      </dialog>
+    </>
+  );
+}
+
+export default function BookCall() {
   return (
     <aside className="bc rv" aria-labelledby="bc-title">
       <style>{css}</style>
@@ -68,7 +102,7 @@ export default function BookCall() {
         </h3>
       </div>
       <div className="bc-side">
-        <a className="bc-mail" href={mailto}>
+        <a className="bc-mail" href={MAILTO}>
           <span>
             <small>Email me</small>
             {PROFILE.email}
@@ -76,44 +110,16 @@ export default function BookCall() {
           <span aria-hidden="true">↗</span>
         </a>
         <p className="bc-or">or</p>
-        {PROFILE.booking ? (
-          <button type="button" className="bc-book" onClick={open} aria-haspopup="dialog">
-            <CalendarIcon />
-            Book a call
-          </button>
-        ) : (
-          <a className="bc-book" href={mailto}>
-            <CalendarIcon />
-            Book a call
-          </a>
-        )}
-        <p className="bc-hours">Mon – Fri · 4 – 6 pm (Madrid time)</p>
+        <BookButton className="bc-book">
+          <CalendarIcon />
+          Book a call
+        </BookButton>
       </div>
-
-      {PROFILE.booking && (
-        <dialog
-          ref={dlg}
-          className="bc-dlg"
-          aria-labelledby="bc-dlg-title"
-          onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
-        >
-          <div className="bc-head">
-            <p id="bc-dlg-title">
-              Book a call about your website
-              <small>Mon – Fri · 4 – 6 pm (Madrid time)</small>
-            </p>
-            <button type="button" className="bc-x" onClick={() => dlg.current?.close()} aria-label="Close">
-              ×
-            </button>
-          </div>
-          {opened && <iframe src={PROFILE.booking} title="Book a call with Alejandro (Google Calendar)" />}
-        </dialog>
-      )}
     </aside>
   );
 }
 
-function CalendarIcon() {
+export function CalendarIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
       <rect x="2" y="3.5" width="14" height="12.5" rx="2.5" />

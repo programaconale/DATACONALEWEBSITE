@@ -57,6 +57,9 @@ const css = `
   box-shadow:0 0 0 8px rgba(13,13,13,.035),0 18px 34px -16px rgba(13,13,13,.45)}
 .idc-photo div{width:100%;height:100%;border-radius:15px;overflow:hidden;background:#f2f2f2}
 .idc-photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.idc-photo div{position:relative}
+.idc-photo .idc-otw{position:absolute;left:0;top:18px;width:100%;height:auto;aspect-ratio:1;object-fit:contain;transform:none;pointer-events:none}
+.idc:hover .idc-photo .idc-otw,.idc:has(.idc-hit:focus-visible) .idc-photo .idc-otw{transform:none}
 .idc:hover .idc-photo img,.idc:has(.idc-hit:focus-visible) .idc-photo img{transform:scale(1.07)}
 .idc-name{margin:12px 0 0;font-weight:700;font-size:17px;letter-spacing:-.03em;line-height:1.15;text-align:center}
 .idc-role{margin:3px 0 0;font-size:12.5px;color:var(--mute)}
@@ -255,6 +258,8 @@ export default function About() {
                       <div>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/portrait-bust.webp" alt={`Portrait of ${PROFILE.name}`} width={480} height={600} loading="lazy" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="idc-otw" src="/opentowork.webp" alt="#OpenToWork" width={360} height={360} loading="lazy" />
                       </div>
                     </div>
                     <p className="idc-name">{PROFILE.name}</p>
